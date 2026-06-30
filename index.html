@@ -50,13 +50,121 @@ animation:nightSky 24s ease infinite;
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   opacity: 0.55;
+}
+  /* ===========================
+   SHOOTING STARS
+=========================== */
+
+#shooting-stars{
+
+position:fixed;
+
+inset:0;
+
+pointer-events:none;
+
+overflow:hidden;
+
+z-index:2;
+
+}
+
+.shooting-star{
+
+position:absolute;
+
+width:140px;
+
+height:2px;
+
+background:linear-gradient(
+90deg,
+rgba(255,255,255,0),
+rgba(255,255,255,.95)
+);
+
+border-radius:999px;
+
+filter:drop-shadow(0 0 8px white);
+
+transform:rotate(-35deg);
+
+animation:shoot 1.4s linear forwards;
+
+}
+
+@keyframes shoot{
+
+0%{
+
+transform:
+translate(0,0)
+rotate(-35deg);
+
+opacity:0;
+
+}
+
+10%{
+
+opacity:1;
+
+}
+
+100%{
+
+transform:
+translate(-900px,500px)
+rotate(-35deg);
+
+opacity:0;
+
+}
+
+}
+  /* ===========================
+   AURORA SKY
+=========================== */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+pointer-events:none;
+
+z-index:-1;
+
+background:
+
+radial-gradient(circle at 20% 30%,
+rgba(255,145,205,.18),
+transparent 45%),
+
+radial-gradient(circle at 80% 20%,
+rgba(173,122,255,.18),
+transparent 40%),
+
+radial-gradient(circle at 50% 90%,
+rgba(255,200,235,.10),
+transparent 50%);
+
+background-size:180% 180%;
+
+animation:auroraMove 26s ease infinite;
+
+filter:blur(70px);
+
 }
 
 .section {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 720px;
   margin: 0 auto;
   padding: 6rem 2rem;
@@ -662,40 +770,26 @@ transform:none;
 }
 
 }
-  /* ===========================
-   BREATHING NIGHT SKY
-=========================== */
-
-@keyframes nightSky{
+  @keyframes auroraMove{
 
 0%{
-
 background-position:0% 50%;
-
 }
 
 25%{
-
-background-position:100% 50%;
-
+background-position:100% 20%;
 }
 
 50%{
-
 background-position:100% 100%;
-
 }
 
 75%{
-
-background-position:0% 100%;
-
+background-position:0% 80%;
 }
 
 100%{
-
 background-position:0% 50%;
-
 }
 
 }
@@ -715,7 +809,12 @@ background-position:0% 50%;
 </div>
 
 <canvas id="star-canvas"></canvas>
-<div class="easter-toast" id="easter-toast">✦ you found it! mwah! ✦</div>
+
+<div id="shooting-stars"></div>
+
+<div class="easter-toast" id="easter-toast">
+✦ you found it! mwah! ✦
+</div>
 
 <!-- HERO -->
 <section class="section" id="hero" style="max-width:100%;">
@@ -1261,6 +1360,37 @@ window.addEventListener("load",()=>{
     },2800);
 
 });
+  /* ===========================
+   SHOOTING STARS
+=========================== */
+
+function createShootingStar(){
+
+const star=document.createElement("div");
+
+star.className="shooting-star";
+
+star.style.top = (5 + Math.random() * 45) + "%";
+
+star.style.right="-180px";
+
+document
+.getElementById("shooting-stars")
+.appendChild(star);
+
+setTimeout(()=>{
+
+star.remove();
+
+},1600);
+
+}
+
+setInterval(()=>{
+
+createShootingStar();
+
+},12000);
 </script>
 </body>
 </html>
