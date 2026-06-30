@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for my love</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:          #1a0a14;
+  --bg2:         #230f1c;
+  --bg3:         #2e1426;
+  --petal:       #c4547a;
+  --petal-light: #e8a0b8;
+  --petal-pale:  #f5dce8;
+  --lavender:    #9b7db8;
+  --lav-pale:    #d4bfe8;
+  --gold:        #d4a853;
+  --text:        #f0e4ec;
+  --muted:       #9a7a8a;
+  --border:      rgba(196,84,122,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--petal); border-radius: 2px; }
+
+#star-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.section {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+.section + .section { border-top: 1px solid var(--border); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--petal);
+  margin-bottom: 1.2rem;
+}
+.display {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--petal-pale);
+  line-height: 1.1;
+}
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+#hero .eyebrow { margin-bottom: 2rem; }
+#hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 12vw, 96px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--petal-pale);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+#hero .sub {
+  margin-top: 1.5rem;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.hero-petal {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--petal);
+  filter: blur(80px);
+  opacity: 0.07;
+  pointer-events: none;
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--petal), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* FEELINGS */
+#feelings h2 { font-size: clamp(32px, 6vw, 52px); margin-bottom: 0.5rem; }
+#feelings .intro { font-size: 14px; color: var(--muted); margin-bottom: 3rem; }
+
+.feeling-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.feeling-grid-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 14px 0 0;
+}
+
+.feeling-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s, transform 0.3s, background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feeling-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s;
+  border-radius: 16px;
+}
+.feeling-card:hover { transform: translateY(-3px); }
+.feeling-card:hover::before { opacity: 1; }
+
+.fc-sad::before      { background: radial-gradient(circle at 50% 0%, rgba(100,130,200,0.12), transparent 70%); }
+.fc-happy::before    { background: radial-gradient(circle at 50% 0%, rgba(212,168,83,0.12), transparent 70%); }
+.fc-miss::before     { background: radial-gradient(circle at 50% 0%, rgba(155,125,184,0.12), transparent 70%); }
+.fc-comfort::before  { background: radial-gradient(circle at 50% 0%, rgba(196,84,122,0.12), transparent 70%); }
+.fc-romantic::before { background: radial-gradient(circle at 50% 0%, rgba(232,160,184,0.12), transparent 70%); }
+.fc-over::before     { background: radial-gradient(circle at 50% 0%, rgba(180,200,140,0.10), transparent 70%); }
+
+.fc-sad:hover      { border-color: rgba(100,130,200,0.4); }
+.fc-happy:hover    { border-color: rgba(212,168,83,0.4); }
+.fc-miss:hover     { border-color: rgba(155,125,184,0.4); }
+.fc-comfort:hover  { border-color: rgba(196,84,122,0.4); }
+.fc-romantic:hover { border-color: rgba(232,160,184,0.5); }
+.fc-over:hover     { border-color: rgba(180,200,140,0.35); }
+
+.feeling-glyph { font-size: 28px; margin-bottom: 14px; display: block; }
+.feeling-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--petal-pale);
+  margin-bottom: 4px;
+}
+.feeling-type {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.feeling-btn {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--petal-light);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  font-family: 'Jost', sans-serif;
+  text-transform: uppercase;
+}
+.feeling-btn:hover { background: rgba(196,84,122,0.12); border-color: var(--petal); }
+
+/* VIDEO SECTION */
+#video-section { text-align: center; }
+#video-section h2 { font-size: clamp(36px, 7vw, 60px); margin-bottom: 0.5rem; }
+#video-section .sub-note { font-size: 13px; color: var(--muted); margin-bottom: 2.5rem; }
+.video-frame {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: radial-gradient(ellipse at center, var(--bg3) 0%, var(--bg) 100%);
+}
+.play-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(196,84,122,0.15);
+  border: 1.5px solid var(--petal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.play-btn:hover { background: rgba(196,84,122,0.3); transform: scale(1.08); }
+.play-triangle {
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent var(--petal-light);
+  margin-left: 4px;
+}
+.video-label { font-size: 12px; color: var(--muted); letter-spacing: 0.1em; }
+
+/* REMINDERS */
+#reminders h2 { font-size: clamp(32px, 6vw, 52px); margin-bottom: 0.5rem; }
+#reminders .intro { font-size: 14px; color: var(--muted); margin-bottom: 3rem; }
+.reminder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+.reminder-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  user-select: none;
+}
+.reminder-item:hover { border-color: rgba(196,84,122,0.4); }
+.reminder-glyph { font-size: 24px; margin-bottom: 10px; }
+.reminder-name {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.reminder-song-display {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--petal-light);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.reminder-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--petal-light);
+  line-height: 1.4;
+  display: none;
+  margin-top: 8px;
+}
+.reminder-item.open .reminder-note { display: block; }
+.reminder-item.open { border-color: var(--petal); background: var(--bg3); }
+
+/* STARMAP */
+#starmap { text-align: center; }
+#starmap h2 { font-size: clamp(32px, 6vw, 52px); margin-bottom: 0.5rem; }
+#starmap .intro { font-size: 14px; color: var(--muted); margin-bottom: 2.5rem; }
+.starmap-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+}
+#starmap-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.star-node { cursor: pointer; }
+
+.star-circle {
+  fill: var(--gold);
+  filter: url(#glow);
+  transition: opacity 0.25s ease;
+}
+.star-node:hover .star-circle { opacity: 0.7; }
+.star-secret .star-circle {
+  animation: starPulse 2.4s ease-in-out infinite;
+}
+@keyframes starPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+.star-label {
+  fill: var(--muted);
+  font-family: 'Jost', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.constellation-line {
+  stroke: rgba(212,168,83,0.2);
+  stroke-width: 0.8;
+  fill: none;
+  pointer-events: none;
+}
+.star-tooltip {
+  position: absolute;
+  background: var(--bg3);
+  border: 1px solid rgba(212,168,83,0.35);
+  border-radius: 12px;
+  padding: 14px 18px;
+  max-width: 210px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s, transform 0.3s;
+  text-align: left;
+  z-index: 10;
+}
+.star-tooltip.show { opacity: 1; transform: translateY(0); }
+.tip-star { font-size: 12px; color: var(--gold); margin-bottom: 4px; }
+.tip-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: var(--petal-pale); margin-bottom: 4px; }
+.tip-msg  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.tip-found { font-size: 13px; color: var(--petal-light); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+
+/* LETTER */
+#letter { text-align: center; }
+.letter-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.letter-card::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: var(--petal);
+  opacity: 0.04;
+  pointer-events: none;
+}
+.letter-opening {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--petal-light);
+  margin-bottom: 1.5rem;
+}
+.letter-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--petal-pale);
+  line-height: 1.85;
+}
+.letter-sign {
+  margin-top: 2.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--petal-light);
+}
+
+/* SIGNOFF */
+#signoff { text-align: center; padding-bottom: 8rem; }
+#signoff h2 { font-size: clamp(42px, 9vw, 78px); margin-bottom: 1rem; }
+#signoff .closing {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,3,8,0.88);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+  backdrop-filter: blur(6px);
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.modal-backdrop.open .modal { transform: none; }
+.modal-close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--petal-light); }
+.modal-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--petal);
+  margin-bottom: 1rem;
+}
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-style: italic;
+  color: var(--petal-pale);
+  margin-bottom: 1.5rem;
+}
+.modal-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--petal-light);
+  line-height: 1.85;
+}
+.video-modal-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.modal-backdrop.open .video-modal-wrap { transform: none; }
+.video-modal-inner {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.video-modal-inner iframe,
+.video-modal-inner video { width: 100%; height: 100%; object-fit: cover; border: none; }
+
+/* SPARKLE */
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 200;
+  font-size: 18px;
+  animation: sparkleFly 1.2s ease-out forwards;
+}
+@keyframes sparkleFly {
+  0%   { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+}
+
+.easter-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg3);
+  border: 1px solid rgba(212,168,83,0.4);
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  z-index: 150;
+  opacity: 0;
+  transition: opacity 0.4s, transform 0.4s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.easter-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+</style>
+</head>
+<body>
+
+<canvas id="star-canvas"></canvas>
+<div class="easter-toast" id="easter-toast">✦ you found it! mwah! ✦</div>
+
+<!-- HERO -->
+<section class="section" id="hero" style="max-width:100%;">
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+    <div class="hero-petal" style="width:500px;height:500px;top:-100px;left:-100px;"></div>
+    <div class="hero-petal" style="width:400px;height:400px;bottom:-80px;right:-80px;"></div>
+  </div>
+  <div class="reveal" style="position:relative;">
+    <p class="eyebrow">a little something</p>
+    <h1 class="display" style="font-size:clamp(52px,12vw,96px);">for my love</h1>
+    <p class="sub">
+      <!-- ✏️ EDIT: subtitle -->
+      happy one month together ✦
+    </p>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- FEELINGS -->
+<section class="section reveal" id="feelings">
+  <p class="eyebrow">for every feeling</p>
+  <h2 class="display">open when...</h2>
+  <p class="intro">for you, for whatever moment you're in right now.</p>
+
+  <div class="feeling-grid">
+
+    <!-- CARD 1: SAD — video -->
+    <div class="feeling-card fc-sad"
+         data-type="video"
+         data-video-src="PASTE_YOUR_SAD_VIDEO_URL_HERE"
+         data-title="you're sad"
+         onclick="openFeeling(this)">
+      <span class="feeling-glyph">🌧️</span>
+      <div class="feeling-title">you're sad</div>
+      <div class="feeling-type">video from me</div>
+      <button class="feeling-btn">▶ watch</button>
+    </div>
+
+    <!-- CARD 2: HAPPY — letter -->
+    <div class="feeling-card fc-happy"
+         data-type="letter"
+         data-title="you're happy"
+         data-letter="My love,&lt;br&gt;&lt;br&gt;I hope you know that your happiness is my happiness too. When you smile, something in my chest just — settles. Like the world is doing exactly what it should be doing.&lt;br&gt;&lt;br&gt;Keep this feeling close. You deserve every bit of it.&lt;br&gt;&lt;br&gt;I love you."
+         onclick="openFeeling(this)">
+      <span class="feeling-glyph">✨</span>
+      <div class="feeling-title">you're happy</div>
+      <div class="feeling-type">a letter</div>
+      <button class="feeling-btn">open</button>
+    </div>
+
+    <!-- CARD 3: MISS ME — letter -->
+    <div class="feeling-card fc-miss"
+         data-type="letter"
+         data-title="you miss me"
+         data-letter="I miss you too, even before you finish reading this.&lt;br&gt;&lt;br&gt;Distance is the cruelest joke when someone makes you feel the way you make me feel. But I carry you with me — in every quiet moment, every song, every sky that looks too pretty not to share with you.&lt;br&gt;&lt;br&gt;Not long now. I promise."
+         onclick="openFeeling(this)">
+      <span class="feeling-glyph">🌙</span>
+      <div class="feeling-title">you miss me</div>
+      <div class="feeling-type">a letter</div>
+      <button class="feeling-btn">open</button>
+    </div>
+
+  </div>
+
+  <div class="feeling-grid-bottom">
+
+    <!-- CARD 4: COMFORT — letter -->
+    <div class="feeling-card fc-comfort"
+         data-type="letter"
+         data-title="you need comfort"
+         data-letter="Hey. I've got you.&lt;br&gt;&lt;br&gt;Whatever it is — it's okay to feel it. You don't have to be strong every second. You're allowed to just... be. And I'll be right here, even from far away, just wanting you to breathe.&lt;br&gt;&lt;br&gt;You are so loved. So, so loved."
+         onclick="openFeeling(this)">
+      <span class="feeling-glyph">🕯️</span>
+      <div class="feeling-title">you need comfort</div>
+      <div class="feeling-type">a letter</div>
+      <button class="feeling-btn">open</button>
+    </div>
+
+    <!-- CARD 5: ROMANTIC — letter -->
+    <div class="feeling-card fc-romantic"
+         data-type="letter"
+         data-title="feeling romantic"
+         data-letter="God, I love you.&lt;br&gt;&lt;br&gt;I didn't think one month could feel like a whole world, but here we are. You've rearranged something in me — I'm not sure what it was before, I just know it's different now, and I never want to go back.&lt;br&gt;&lt;br&gt;Thank you for being mine, even from across the distance."
+         onclick="openFeeling(this)">
+      <span class="feeling-glyph">🌹</span>
+      <div class="feeling-title">feeling romantic</div>
+      <div class="feeling-type">a letter</div>
+      <button class="feeling-btn">open</button>
+    </div>
+
+    <!-- CARD 6: OVERTHINKING — letter -->
+    <div class="feeling-card fc-over"
+         data-type="letter"
+         data-title="you're overthinking"
+         data-letter="Stop. Breathe. Come back to me.&lt;br&gt;&lt;br&gt;Your brain is doing that thing again where it builds a whole catastrophe out of nothing. I know it. And I'm here to tell you — gently, with so much love — that it's not real.&lt;br&gt;&lt;br&gt;You are enough. You are more than enough. And I am not going anywhere."
+         onclick="openFeeling(this)">
+      <span class="feeling-glyph">🌀</span>
+      <div class="feeling-title">you're overthinking</div>
+      <div class="feeling-type">a letter</div>
+      <button class="feeling-btn">open</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="section reveal" id="video-section">
+  <p class="eyebrow">from me to you</p>
+  <h2 class="display">the way you changed everything</h2>
+  <p class="sub-note">play when you're ready — no rush, I'll be right here.</p>
+
+  <div class="video-frame">
+    <!--
+      ✏️ REPLACE the div below with your actual video once you film it.
+
+      YouTube:
+        <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+          frameborder="0" allowfullscreen
+          style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+
+      Direct video file:
+        <video controls style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <source src="your-video.mp4" type="video/mp4">
+        </video>
+    -->
+    <div class="video-placeholder">
+      <div class="play-btn" id="play-btn-main">
+        <div class="play-triangle"></div>
+      </div>
+      <div class="video-label">your video goes here ✦</div>
+    </div>
+  </div>
+</section>
+
+<!-- REMINDERS -->
+<section class="section reveal" id="reminders">
+  <p class="eyebrow">little things</p>
+  <h2 class="display">things that remind me of you</h2>
+  <p class="intro">tap each one.</p>
+
+  <div class="reminder-grid">
+
+    <!-- ✏️ SONG CARD: replace "Song Name — Artist" with your actual song -->
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">🎵</div>
+      <div class="reminder-name">our song</div>
+      <div class="reminder-song-display">Song Name — Artist</div>
+      <div class="reminder-note">every time it plays i think of you and smile like an idiot</div>
+    </div>
+
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">🌙</div>
+      <div class="reminder-name">late nights</div>
+      <div class="reminder-note">the hours we forget to sleep because talking feels more important</div>
+    </div>
+
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">☕</div>
+      <div class="reminder-name">mornings</div>
+      <div class="reminder-note">when my first thought is you, before i'm even properly awake</div>
+    </div>
+
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">🌸</div>
+      <div class="reminder-name">pink things</div>
+      <div class="reminder-note">now i see pink and just... think of softness. of you.</div>
+    </div>
+
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">📱</div>
+      <div class="reminder-name">notifications</div>
+      <div class="reminder-note">every buzz and my heart does this embarrassing little jump</div>
+    </div>
+
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">⭐</div>
+      <div class="reminder-name">stars</div>
+      <div class="reminder-note">we're under the same sky. that's enough for now.</div>
+    </div>
+
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">😂</div>
+      <div class="reminder-name">laughing</div>
+      <div class="reminder-note">no one makes me laugh the way you do. no one even comes close.</div>
+    </div>
+
+    <div class="reminder-item" onclick="toggleReminder(this)">
+      <div class="reminder-glyph">🤍</div>
+      <div class="reminder-name">quiet moments</div>
+      <div class="reminder-note">even the silence with you is warm</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STARMAP -->
+<section class="section reveal" id="starmap">
+  <p class="eyebrow">a constellation</p>
+  <h2 class="display">our little universe</h2>
+  <p class="intro">one star holds a secret — find it.</p>
+
+  <div class="starmap-wrap">
+    <div class="star-tooltip" id="star-tooltip">
+      <div class="tip-star">✦</div>
+      <div class="tip-name" id="tip-name"></div>
+      <div class="tip-msg"  id="tip-msg"></div>
+    </div>
+
+    <svg id="starmap-svg" viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-secret" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <line class="constellation-line" x1="100" y1="80"  x2="200" y2="140"/>
+      <line class="constellation-line" x1="200" y1="140" x2="310" y2="100"/>
+      <line class="constellation-line" x1="310" y1="100" x2="430" y2="160"/>
+      <line class="constellation-line" x1="430" y1="160" x2="380" y2="260"/>
+      <line class="constellation-line" x1="200" y1="140" x2="160" y2="240"/>
+      <line class="constellation-line" x1="160" y1="240" x2="380" y2="260"/>
+      <line class="constellation-line" x1="310" y1="100" x2="260" y2="200"/>
+      <line class="constellation-line" x1="260" y1="200" x2="160" y2="240"/>
+
+      <circle cx="50"  cy="30"  r="1"   fill="rgba(212,168,83,0.3)"/>
+      <circle cx="500" cy="50"  r="1.2" fill="rgba(212,168,83,0.25)"/>
+      <circle cx="480" cy="310" r="1"   fill="rgba(212,168,83,0.2)"/>
+      <circle cx="70"  cy="310" r="1.5" fill="rgba(212,168,83,0.2)"/>
+      <circle cx="540" cy="200" r="1"   fill="rgba(196,84,122,0.3)"/>
+      <circle cx="20"  cy="180" r="1"   fill="rgba(155,125,184,0.3)"/>
+
+      <g class="star-node" transform="translate(100,80)"
+         data-name="the beginning"
+         data-msg="not this one, try again ✦"
+         onclick="showStar(this, event)">
+        <circle r="5" class="star-circle"/>
+        <text class="star-label" x="10" y="4">first light</text>
+      </g>
+
+      <g class="star-node" transform="translate(200,140)"
+         data-name="your laugh"
+         data-msg="not this one, try again ✦"
+         onclick="showStar(this, event)">
+        <circle r="7" class="star-circle"/>
+        <text class="star-label" x="10" y="4">your laugh</text>
+      </g>
+
+      <!-- ✏️ SECRET STAR — move data-secret="true" to any other star to change which one is the secret -->
+      <g class="star-node star-secret" transform="translate(310,100)"
+         data-name="one month ✦"
+         data-msg="you found it! mwah! 💋"
+         data-secret="true"
+         onclick="showStar(this, event)">
+        <circle r="10" class="star-circle" style="fill:var(--petal); filter:url(#glow-secret);"/>
+        <text class="star-label" x="14" y="4">one month ✦</text>
+      </g>
+
+      <g class="star-node" transform="translate(430,160)"
+         data-name="the distance"
+         data-msg="not this one, try again ✦"
+         onclick="showStar(this, event)">
+        <circle r="5" class="star-circle"/>
+        <text class="star-label" x="10" y="4">distance</text>
+      </g>
+
+      <g class="star-node" transform="translate(160,240)"
+         data-name="late nights"
+         data-msg="not this one, try again ✦"
+         onclick="showStar(this, event)">
+        <circle r="6" class="star-circle"/>
+        <text class="star-label" x="10" y="4">late nights</text>
+      </g>
+
+      <g class="star-node" transform="translate(260,200)"
+         data-name="a secret"
+         data-msg="not this one, try again ✦"
+         onclick="showStar(this, event)">
+        <circle r="5" class="star-circle" style="fill:var(--lavender);"/>
+        <text class="star-label" x="10" y="4">a secret</text>
+      </g>
+
+      <g class="star-node" transform="translate(380,260)"
+         data-name="soon"
+         data-msg="not this one, try again ✦"
+         onclick="showStar(this, event)">
+        <circle r="6" class="star-circle"/>
+        <text class="star-label" x="10" y="4">soon</text>
+      </g>
+
+    </svg>
+  </div>
+</section>
+
+<!-- LETTER -->
+<section class="section reveal" id="letter">
+  <p class="eyebrow">from me</p>
+  <h2 class="display" style="margin-bottom:2.5rem;">a letter</h2>
+
+  <div class="letter-card">
+    <p class="letter-opening">to the one who changed everything —</p>
+    <div class="letter-body">
+      <!-- ✏️ EDIT: your full letter. Use <br><br> for paragraph breaks. -->
+      I didn't think one month could feel like this.<br><br>
+      Like someone quietly rearranged all the furniture in my chest
+      while I wasn't looking, and now everything sits differently —
+      warmer, a little more sure of itself.<br><br>
+      You did that. I don't know if you know.<br><br>
+      I look forward to things differently now. September feels
+      like a promise I keep making to myself, and October
+      feels like the exhale at the end of a very long breath.
+      I think about what it'll be like to finally see you —
+      not on a screen, not through a phone, just you,
+      in the same air as me — and I can't think about it too
+      long or I get embarrassingly emotional about it.<br><br>
+      One month. And somehow you're already someone I can't
+      imagine not having. You make ordinary days feel like
+      they matter. You make distance feel survivable.
+      You make me feel like the most seen person in any room,
+      even when the room is just a call window at 2am.<br><br>
+      I love you. I love who you are, and who I am
+      when I'm talking to you, and all the months
+      and moments that are still ahead of us.<br><br>
+      Thank you for being mine.
+    </div>
+    <div class="letter-sign">
+      <!-- ✏️ EDIT: sign off -->
+      with everything I have, always — yours ✦
+    </div>
+  </div>
+</section>
+
+<!-- SIGN OFF -->
+<section class="section reveal" id="signoff">
+  <p class="eyebrow">always</p>
+  <h2 class="display">i love you.</h2>
+  <p class="closing">
+    <!-- ✏️ EDIT -->
+    one month down. a lifetime to go. ✦
+  </p>
+</section>
+
+<!-- LETTER MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeAllModals()">&times;</button>
+    <p class="modal-eyebrow">open when</p>
+    <h3 class="modal-title" id="modal-title"></h3>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-backdrop" id="video-modal-backdrop" onclick="closeModal(event)">
+  <div class="video-modal-wrap">
+    <button class="modal-close" onclick="closeAllModals()" style="color:var(--muted)">&times;</button>
+    <div class="video-modal-inner" id="video-modal-inner"></div>
+  </div>
+</div>
+
+<script>
+/* AMBIENT STARS */
+(function() {
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  function makeStars(n) {
+    stars = [];
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        speed: Math.random() * 0.004 + 0.001,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let s of stars) {
+      const alpha = 0.2 + 0.6 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(212,168,83,${alpha})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  resize();
+  makeStars(160);
+  window.addEventListener('resize', () => { resize(); makeStars(160); });
+  requestAnimationFrame(draw);
+})();
+
+/* SCROLL REVEAL */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* FEELINGS MODAL */
+function openFeeling(card) {
+  const type = card.dataset.type;
+  if (type === 'video') {
+    const src = card.dataset.videoSrc;
+    if (!src || src.startsWith('PASTE_')) {
+      openLetterModal('a message from me', 'your video will go here — film it soon 🎥');
+      return;
+    }
+    document.getElementById('video-modal-inner').innerHTML =
+      `<iframe src="${src}" frameborder="0" allowfullscreen style="width:100%;height:100%;"></iframe>`;
+    document.getElementById('video-modal-backdrop').classList.add('open');
+    return;
+  }
+  const letter = card.dataset.letter || '';
+  openLetterModal(card.dataset.title, letter);
+}
+
+function openLetterModal(title, body) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modal-backdrop' || e.target.id === 'video-modal-backdrop') closeAllModals();
+}
+function closeAllModals() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+  document.getElementById('video-modal-backdrop').classList.remove('open');
+  document.getElementById('video-modal-inner').innerHTML = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllModals(); });
+
+/* REMINDERS */
+function toggleReminder(el) { el.classList.toggle('open'); }
+
+/* STARMAP */
+const tooltip = document.getElementById('star-tooltip');
+const tipName = document.getElementById('tip-name');
+const tipMsg  = document.getElementById('tip-msg');
+let activeNode = null;
+
+function showStar(node, event) {
+  event.stopPropagation();
+  const isSecret = node.dataset.secret === 'true';
+  const msg = node.dataset.msg || '';
+
+  if (activeNode === node) {
+    tooltip.classList.remove('show');
+    activeNode = null;
+    return;
+  }
+  activeNode = node;
+
+  tipName.textContent = node.dataset.name || '';
+  if (isSecret) {
+    tipMsg.innerHTML = `<span class="tip-found">${msg}</span>`;
+    burstSparkles(event.clientX, event.clientY, 18);
+    burstSparkles(event.clientX, event.clientY, 18);
+    const toast = document.getElementById('easter-toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3800);
+  } else {
+    tipMsg.textContent = msg;
+    burstSparkles(event.clientX, event.clientY, 6);
+  }
+
+  const wrap  = document.querySelector('.starmap-wrap');
+  const wrect = wrap.getBoundingClientRect();
+  const nrect = node.getBoundingClientRect();
+  let left = nrect.left - wrect.left + 16;
+  let top  = nrect.top  - wrect.top  - 14;
+  if (top < 4) top = nrect.bottom - wrect.top + 8;
+  tooltip.style.left = Math.min(left, wrect.width - 220) + 'px';
+  tooltip.style.top  = top + 'px';
+  tooltip.classList.add('show');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.star-node')) {
+    tooltip.classList.remove('show');
+    activeNode = null;
+  }
+});
+
+/* SPARKLES */
+function burstSparkles(cx, cy, count) {
+  const glyphs = ['✦','✧','·','★','✩','✦','💋'];
+  for (let i = 0; i < (count || 10); i++) {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    el.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+    const angle = (Math.PI * 2 / (count || 10)) * i + Math.random() * 0.5;
+    const dist  = 40 + Math.random() * 70;
+    el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+    el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+    el.style.left  = cx + 'px';
+    el.style.top   = cy + 'px';
+    el.style.color = Math.random() > 0.5 ? 'var(--gold)' : 'var(--petal-light)';
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
+/* EASTER EGG: triple-click play button */
+let playClicks = 0;
+const playBtnMain = document.getElementById('play-btn-main');
+if (playBtnMain) {
+  playBtnMain.addEventListener('click', () => {
+    playClicks++;
+    if (playClicks === 3) {
+      const toast = document.getElementById('easter-toast');
+      toast.textContent = '✦ you found it — i love you so much ✦';
+      toast.classList.add('show');
+      burstSparkles(window.innerWidth / 2, window.innerHeight / 2, 16);
+      setTimeout(() => toast.classList.remove('show'), 3800);
+      playClicks = 0;
+    }
+  });
+}
+</script>
+</body>
+</html>
