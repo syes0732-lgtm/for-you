@@ -106,6 +106,54 @@ rotate(-35deg);
 opacity:0;
 
 }
+  /* ===========================
+   SAKURA PETALS
+=========================== */
+
+#petals{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:3;
+}
+
+.petal{
+    position:absolute;
+    width:12px;
+    height:12px;
+    border-radius:70% 0 70% 0;
+    background:rgba(255,204,225,.95);
+    transform:rotate(45deg);
+    box-shadow:0 0 10px rgba(255,192,203,.35);
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+
+0%{
+transform:
+translateY(-30px)
+translateX(0)
+rotate(0deg);
+
+opacity:0;
+}
+
+10%{
+opacity:1;
+}
+
+100%{
+transform:
+translateY(110vh)
+translateX(120px)
+rotate(360deg);
+
+opacity:0;
+}
+
+}
 
 10%{
 
@@ -812,6 +860,8 @@ background-position:0% 50%;
 
 <div id="shooting-stars"></div>
 
+  <div id="petals"></div>
+
 <div class="easter-toast" id="easter-toast">
 ✦ you found it! mwah! ✦
 </div>
@@ -1391,6 +1441,40 @@ setInterval(()=>{
 createShootingStar();
 
 },12000);
+  /* ===========================
+   SAKURA PETALS
+=========================== */
+
+function createPetal(){
+
+const petal=document.createElement("div");
+
+petal.className="petal";
+
+petal.style.left=Math.random()*100+"vw";
+
+const size=8+Math.random()*10;
+
+petal.style.width=size+"px";
+
+petal.style.height=size+"px";
+
+petal.style.animationDuration=
+8+Math.random()*6+"s";
+
+document
+.getElementById("petals")
+.appendChild(petal);
+
+setTimeout(()=>{
+
+petal.remove();
+
+},15000);
+
+}
+
+setInterval(createPetal,700);
 </script>
 </body>
 </html>
